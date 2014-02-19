@@ -1,0 +1,22 @@
+#set( $_ = ${DOLLAR} )
+##--------------------------------------------------------------------------------------------
+'use strict';
+
+/* Factory for ${entity.name} */
+
+myAppServices.factory('${entity.name}', ['${_}http', function(${_}http) {
+	var baseUrl = 'http://localhost:8080/demo/rest/${entity.name.toLowerCase()}';
+	return {
+		get: function(${entity.name.toLowerCase()}Id) {
+			return ${_}http.get(baseUrl + '/' + ${entity.name.toLowerCase()}Id);
+		},
+		save: function(${entity.name.toLowerCase()}) {
+			var url = ${entity.name.toLowerCase()}.id ? baseUrl + '/' + ${entity.name.toLowerCase()}.id : baseUrl;
+			return ${_}http.post(url, ${entity.name.toLowerCase()});
+		},
+		delete: function(${entity.name.toLowerCase()}Id) {
+			return ${_}http.delete(baseUrl + '/' + ${entity.name.toLowerCase()}Id);
+		}
+	};
+}]);
+

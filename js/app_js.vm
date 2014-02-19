@@ -1,0 +1,21 @@
+#set( $_ = ${DOLLAR} )
+##--------------------------------------------------------------------------------------------
+'use strict';
+
+
+// Declare app level module which depends on filters, and services
+angular.module('myApp', [
+  'ngRoute',
+  'myApp.filters',
+  'myApp.services',
+  'myApp.directives',
+  'myApp.controllers'
+]).
+config(['${_}routeProvider', function(${_}routeProvider) {
+  ${_}routeProvider.when('/welcome', {templateUrl: 'partials/welcome.html'});
+#foreach($entity in ${selectedEntities})
+  ${_}routeProvider.when('/${entity.name.toLowerCase()}',     {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_list.html', controller: '${entity.name}Ctrl'});
+  ${_}routeProvider.when('/${entity.name.toLowerCase()}/:id', {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_form.html', controller: '${entity.name}Ctrl'});
+#end
+  ${_}routeProvider.otherwise({redirectTo: '/welcome'});
+}]);

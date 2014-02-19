@@ -1,0 +1,58 @@
+##--------------------------------------------------------------------------------------------------------
+#set( $tools = $loader.newInstance("Tools") )
+#set( $_ = "$" )
+##--------------------------------------------------------------------------------------------------------
+## Key fields = fields in Primary Key    
+#set( $keyFields = $entity.getAttributesByCriteria( $const.KEY ) )
+##--------------------------------------------------------------------------------------------------------
+## Data fields = fields not in Primary Key and not in selected Links    
+#set( $dataFields = $entity.getAttributesByCriteria( $const.NOT_KEY, $const.NOT_IN_SELECTED_LINKS ) )
+##--------------------------------------------------------------------------------------------------------
+## #set( $itemVariable = $entity.name.toLowerCase() )
+#set( $itemVariable = ${entity.name.toLowerCase()} )
+##--------------------------------------------------------------------------------------------------------
+		<fieldset class="col-sm-12 bordure">
+			<legend class="legende">${entity.name}</legend>
+		
+			<div ng-repeat="success in successs.list" class="alert alert-success">
+       			{{success}}
+			</div>
+			<div ng-repeat="error in errors.list" class="alert alert-danger">
+       			{{error}}
+			</div>
+			
+			<table class="table table-striped">
+## ---TABLE HEAD ------------------------------------------------------------------
+				<thead>
+					<tr>
+## KEY FIELDS
+#foreach( $field in $keyFields )
+						<th>${itemVariable}.${field.formatedName(0)}</th>
+#end
+## DATA FIELDS
+#foreach( $field in $dataFields )
+						<th>${itemVariable}.${field.formatedName(0)}</th>
+#end
+						<th><a class="btn btn-info" href='#/${itemVariable}/new'>create</a></th>
+					</tr>
+				</thead>
+## ---TABLE BODY ------------------------------------------------------------------
+				<tbody>
+					<tr ng-repeat="${entity.name.toLowerCase()} in ${entity.name.toLowerCase()}s.list">
+## KEY FIELDS
+#foreach( $field in $keyFields )
+						<td>{{${entity.name.toLowerCase()}.${field.formatedName(0)}}}</td>
+#end
+## DATA FIELDS
+#foreach( $field in $dataFields )
+#if( $field.formatedType(0) == "Date" ||  $field.formatedType(0) == "Calendar" )
+						<td>{{${entity.name.toLowerCase()}.${field.formatedName(0)}}}</td>
+#else
+						<td>{{${entity.name.toLowerCase()}.${field.formatedName(0)}}}</td>
+#end
+#end
+						<td><a class="btn btn-info" href="#/${itemVariable}/$tools.keyInAngularLanguage($entity, ${itemVariable}, '/')">Edit</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>

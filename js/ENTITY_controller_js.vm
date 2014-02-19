@@ -1,0 +1,144 @@
+#set( $_ = ${DOLLAR} )
+##--------------------------------------------------------------------------------------------
+'use strict';
+
+/* Controller for ${entity.name} */
+
+myAppControllers.controller('${entity.name}Ctrl', ['${_}scope', '${_}routeParams', '${_}http', '${_}location', function(${_}scope, ${_}routeParams, ${_}http, ${_}location) {
+        
+	var baseURL = 'http://localhost:8080/demo/rest';
+
+	// data
+    ${_}scope.${entity.name.toLowerCase()}s = {list: []};
+    ${_}scope.${entity.name.toLowerCase()} = undefined;
+    
+    // success
+    ${_}scope.successs = {list: []};
+    ${_}scope.addSuccess = function(success) {
+        ${_}scope.successs.list.push(success);
+    };
+	
+	// errors
+    ${_}scope.errors = {list: []};
+    ${_}scope.addError = function(error) {
+        ${_}scope.errors.list.push(error);
+    };
+    
+    // location
+    ${_}scope.refresh${entity.name}List = function() {
+        ${_}scope.clean${entity.name}sInScope();
+        ${_}scope.getAll(${_}scope.setAll${entity.name}sInScope);
+    }
+    ${_}scope.goTo${entity.name}List = function() {
+        ${_}scope.refresh${entity.name}List();
+        ${_}location.path('/${entity.name.toLowerCase()}');
+    }
+    ${_}scope.refresh${entity.name} = function(id) {
+        ${_}scope.clean${entity.name}InScope();
+        ${_}scope.getOne(id, ${_}scope.setOne${entity.name}InScope);
+    }
+    ${_}scope.goTo${entity.name} = function(id) {
+        ${_}scope.refresh${entity.name}(id);
+        ${_}location.path('/${entity.name.toLowerCase()}/'+id);
+    }
+
+	// display
+	${_}scope.cleanMessage = function() {
+        ${_}scope.successs.list = [];
+        ${_}scope.errors.list = [];
+    };
+    ${_}scope.clean${entity.name}sInScope = function() {
+        ${_}scope.${entity.name.toLowerCase()}s.list = [];
+    };
+    ${_}scope.clean${entity.name}InScope = function() {
+        ${_}scope.${entity.name.toLowerCase()} = undefined;
+    };
+    ${_}scope.setAll${entity.name}sInScope = function(${entity.name.toLowerCase()}s) {
+        ${_}scope.${entity.name.toLowerCase()}s.list = ${entity.name.toLowerCase()}s;
+    };
+    ${_}scope.add${entity.name}InScope = function(${entity.name.toLowerCase()}) {
+        ${_}scope.${entity.name.toLowerCase()}s.list.push(${entity.name.toLowerCase()});
+    };
+    ${_}scope.setOne${entity.name}InScope = function(${entity.name.toLowerCase()}) {
+        ${_}scope.${entity.name.toLowerCase()} = ${entity.name.toLowerCase()};
+    };
+    
+    // data
+    ${_}scope.getAll = function(callback) {
+        ${_}http({method: 'GET', url: baseURL + '/${entity.name.toLowerCase()}'}).
+        success(function(data, status, headers, config) {
+            callback(data);
+        }).
+        error(function(data, status, headers, config) {
+            ${_}scope.addError(data);
+        });
+    };
+    ${_}scope.getOne = function(${entity.name.toLowerCase()}Id, callback) {
+        if( ${entity.name.toLowerCase()}Id === 'new' ) {
+            return;
+        }
+        var url = baseURL + '/${entity.name.toLowerCase()}';
+        url += '/' + ${entity.name.toLowerCase()}Id;
+        ${_}http({method: 'GET', url: url}).
+        success(function(data, status, headers, config) {
+            callback(data);
+        }).
+        error(function(data, status, headers, config) {
+            ${_}scope.addError(data);
+        });
+    };
+    ${_}scope.saveOne = function(${entity.name.toLowerCase()}, callback) {
+        var url = baseURL + '/${entity.name.toLowerCase()}';
+        var method;
+        if( ${entity.name.toLowerCase()}.id === undefined ) {
+            ${entity.name.toLowerCase()}.id = random();
+            method = 'POST';
+        } else {
+            url += '/' + ${entity.name.toLowerCase()}.id;
+            method = 'PUT';
+        }
+        // ${_}http({method: method, url: url, data: ${entity.name.toLowerCase()}, headers: {'Content-Type': 'application/json'}}).
+        ${_}http({method: method, url: url, data: ${entity.name.toLowerCase()}, headers: {'Content-Type': 'application/json'}}).
+        success(function(data, status, headers, config) {
+			${_}scope.addSuccess('save ok');
+            callback(${entity.name.toLowerCase()});
+        }).
+        error(function(data, status, headers, config) {
+            ${_}scope.addError(data);
+        });
+    };
+    ${_}scope.deleteOne = function(${entity.name.toLowerCase()}Id, callback) {
+        var url = baseURL + '/${entity.name.toLowerCase()}';
+        url += '/' + ${entity.name.toLowerCase()}Id;
+        ${_}http({method: 'DELETE', url: url}).
+        success(function(data, status, headers, config) {
+			${_}scope.addSuccess('delete ok');
+            callback(data);
+        }).
+        error(function(data, status, headers, config) {
+            ${_}scope.addError(data);
+        });
+    };
+        
+    // Actions
+    ${_}scope.save = function() {
+		${_}scope.cleanMessage();
+        ${_}scope.saveOne(${_}scope.${entity.name.toLowerCase()}, ${_}scope.setOne${entity.name}InScope);
+    };
+    ${_}scope.delete = function(id) {
+		${_}scope.cleanMessage();
+        ${_}scope.deleteOne(id, ${_}scope.goTo${entity.name}List);
+    };
+    
+    // Main
+
+	${_}scope.cleanMessage();
+    
+    if( ${_}routeParams.id !== undefined ) {
+        ${_}scope.refresh${entity.name}(${_}routeParams.id);
+    } else {
+        ${_}scope.refresh${entity.name}List();
+    }
+    
+    
+}]);
