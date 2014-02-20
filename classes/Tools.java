@@ -416,7 +416,7 @@ public class Tools {
 		}
 	}
 
-	public String keysAsString(JavaBeanClass entity, String variableName, String separator, String keyPrefix, String keySuffix) {
+	public String keysAsString(JavaBeanClass entity, String separator, String keyPrefix, String keySuffix) {
 		if( entity.hasPrimaryKey() ) {
 			StringBuilder sb = new StringBuilder();
 			int n = 0 ;
@@ -424,8 +424,6 @@ public class Tools {
 				n++ ;
 				if ( n > 1 ) sb.append(separator);
 				sb.append(keyPrefix);
-				sb.append(variableName);
-				sb.append(".");
 				sb.append(attribute.getName());
 				sb.append(keySuffix);
 			}

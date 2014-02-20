@@ -7,6 +7,9 @@
 myAppServices.factory('${entity.name}', ['${_}http', function(${_}http) {
 	var baseUrl = 'http://localhost:8080/demo/rest/${entity.name.toLowerCase()}';
 	return {
+		getAll: function() {
+			return ${_}http.get(baseUrl);
+		},
 		get: function(${entity.name.toLowerCase()}Id) {
 			return ${_}http.get(baseUrl + '/' + ${entity.name.toLowerCase()}Id);
 		},

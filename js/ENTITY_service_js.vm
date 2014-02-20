@@ -2,8 +2,3 @@
 ##--------------------------------------------------------------------------------------------
 'use strict';
 
-/* Service for ${entity.name} */
-
-myAppServices.service('${entity.name}Service', ['${_}scope', function(${_}scope) {
-    
-}]);

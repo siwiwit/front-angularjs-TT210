@@ -14,10 +14,10 @@
 		<fieldset class="col-sm-12 bordure">
 			<legend class="legende">${entity.name}</legend>
 		
-			<div ng-repeat="success in successs.list" class="alert alert-success">
+			<div ng-repeat="success in successs.list" ng-show="successs.list.length > 0" class="alert alert-success">
        			{{success}}
 			</div>
-			<div ng-repeat="error in errors.list" class="alert alert-danger">
+			<div ng-repeat="error in errors.list" ng-show="errors.list.length > 0" class="alert alert-danger">
        			{{error}}
 			</div>
 			

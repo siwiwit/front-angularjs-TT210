@@ -7,6 +7,7 @@
 	<title>Application</title>
 
 	<!-- style -->
+	<link href="css/smoothness/jquery-ui-1.10.4.custom.css" rel="stylesheet"  type="text/css" />
 	<link href="css/bootstrap.min.css" rel="stylesheet"  type="text/css" />
 	<link href="css/bootstrap-theme.min.css" rel="stylesheet"  type="text/css" />
 	<link href="css/datepicker3.css" rel="stylesheet"  type="text/css" />
@@ -36,8 +37,7 @@
 	<!-- javascript -->
 	<script src="lib/validation.js"></script>
 	<script src="lib/jquery-1.10.2.min.js"></script>
-	<script src="lib/bootstrap.js"></script>
-	<script src="lib/bootstrap-datepicker.js"></script>
+	<script src="lib/jquery-ui-1.10.4.custom.min.js"></script>
   	<!-- In production use:
   	<script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   	-->
@@ -53,5 +53,6 @@
 #end
 	<script src="js/filters.js"></script>
 	<script src="js/directives.js"></script>
+	<script src="js/datepicker.js"></script>
 </body>
 </html>

@@ -1,7 +1,15 @@
-#set( $_ = ${DOLLAR} )
-##--------------------------------------------------------------------------------------------
+#set( $tools = $loader.newInstance("Tools") )
+#set( $_= "$" )
+##--------------------------------------------------------------------------------------------------------
 'use strict';
 
+if (typeof String.prototype.endsWith !== 'function') {
+    String.prototype.endsWith = function(suffix) {
+        return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    };
+}
+
+var baseURL = 'http://localhost:8080/demo/rest';
 
 // Declare app level module which depends on filters, and services
 angular.module('myApp', [
@@ -14,8 +22,9 @@ angular.module('myApp', [
 config(['${_}routeProvider', function(${_}routeProvider) {
   ${_}routeProvider.when('/welcome', {templateUrl: 'partials/welcome.html'});
 #foreach($entity in ${selectedEntities})
-  ${_}routeProvider.when('/${entity.name.toLowerCase()}',     {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_list.html', controller: '${entity.name}Ctrl'});
-  ${_}routeProvider.when('/${entity.name.toLowerCase()}/:id', {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_form.html', controller: '${entity.name}Ctrl'});
+  ${_}routeProvider.when('/${entity.name.toLowerCase()}',    {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_list.html', controller: '${entity.name}Ctrl'});
+  ${_}routeProvider.when('/${entity.name.toLowerCase()}/new', {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_form.html', controller: '${entity.name}Ctrl'});
+  ${_}routeProvider.when('/${entity.name.toLowerCase()}/${tools.keysAsString(${entity}, '/', ':', '')}', {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_form.html', controller: '${entity.name}Ctrl'});
 #end
   ${_}routeProvider.otherwise({redirectTo: '/welcome'});
 }]);
