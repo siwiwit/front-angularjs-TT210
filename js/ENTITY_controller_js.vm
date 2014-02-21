@@ -12,6 +12,8 @@
 ## All fields ( ordered fiels : 1) fields in Primary Key 2) fields not in primary key    
 #set( $allFields = $fn.concatLists($keyFields, $dataFields) )
 ##--------------------------------------------------------------------------------------------------------
+#set( $referencedEntities = $tools.referencedEntityTypes($entity, $entity.attributes) )## All referenced entities (PK and NON PK)
+##--------------------------------------------------------------------------------------------------------
 'use strict';
 
 /* Controller for ${entity.name} */
@@ -25,7 +27,28 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
     
 	// data
     ${_}scope.${entity.name.toLowerCase()}s = {list: []};
-    ${_}scope.${entity.name.toLowerCase()} = undefined;
+    ${_}scope.${entity.name.toLowerCase()} = null;
+
+	// referencies entities
+#foreach( $ref in $referencedEntities )
+	${_}scope.${tools.uncapitalize($ref)}s = {list: [], selected: null};
+#end
+	
+#foreach( $ref in $referencedEntities )
+	${_}scope.loadAll${ref} = function() {
+        ${_}http({method: 'GET', url: baseURL + '/items/${tools.uncapitalize($ref)}'}).
+        success(function(data, status, headers, config) {
+            ${_}scope.${tools.uncapitalize($ref)}s.list = data;
+        }).
+        error(${_}scope.manageError);
+    };
+#end
+	
+	${_}scope.loadAllReferencies = function() {
+#foreach( $ref in $referencedEntities )
+		${_}scope.loadAll${ref}();
+#end
+    };
     
     // success
     ${_}scope.successs = {list: []};
@@ -40,13 +63,16 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
     };
 	${_}scope.manageError = function(data, status, headers, config) {
 		if( status === 404 ) {
-			if( data === null || data === "" ) {
+			if( data == null || data === "" ) {
 				${_}scope.addError('The server is not responding');
 			} else {
 				${_}scope.addError('Invalid URL : ' + config.url);
 			}
+		} else if ( status === 400 ) {
+			${_}scope.addError('Bad URL : ' + config.url);
+			${_}scope.addError(data);
 		} else {
-        	if( data !== null && data !== "" ) {
+        	if( data != null && data !== "" ) {
             	${_}scope.addError(data);
         	}
 		}
@@ -79,7 +105,7 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
         ${_}scope.${entity.name.toLowerCase()}s.list = [];
     };
     ${_}scope.clean${entity.name}InScope = function() {
-        ${_}scope.${entity.name.toLowerCase()} = undefined;
+        ${_}scope.${entity.name.toLowerCase()} = null;
     };
     ${_}scope.setAll${entity.name}sInScope = function(${entity.name.toLowerCase()}s) {
         ${_}scope.${entity.name.toLowerCase()}s.list = ${entity.name.toLowerCase()}s;
@@ -114,18 +140,23 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
         var url = entityURL;
         var method;
 #foreach( $attribute in $entity.keyAttributes )
-        if( ${entity.name.toLowerCase()}.${attribute.name} == undefined || ${entity.name.toLowerCase()}.${attribute.name} == '' ) {
+        if( ${entity.name.toLowerCase()}.${attribute.name} == null || ${entity.name.toLowerCase()}.${attribute.name} == '' ) {
 			${_}scope.addError('${attribute.name} is not defined');
 			return;
 		}
 #end
+		// referencies entities
+#foreach( $ref in $referencedEntities )
+		// todo
+#end		
+		// mode : create or update
 		if( ${_}scope.mode === 'create' ) {
             method = 'POST';
         } else {
             url += '/' + ${tools.keysAsString($entity, " + '/' + ", "$entity.name.toLowerCase().", "")};
             method = 'PUT';
         }
-        ${_}http({method: method, url: url, data: ${entity.name.toLowerCase()}, headers: {'Content-Type': 'application/json'}}).
+		${_}http({method: method, url: url, data: ${entity.name.toLowerCase()}, headers: {'Content-Type': 'application/json'}}).
         success(function(data, status, headers, config) {
 			${_}scope.addSuccess('save ok');
             callbackSuccess(${entity.name.toLowerCase()});
@@ -158,8 +189,10 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
     
     if( ${_}location.path().endsWith('/new') ) {
         ${_}scope.mode = 'create';
-        ${_}scope.bookorderitem = undefined;
-    } else if( ${tools.keysAsString($entity, ' && ', '$routeParams.', ' !== undefined')} ) {
+		${_}scope.loadAllReferencies();
+        ${_}scope.bookorderitem = null;
+    } else if( ${tools.keysAsString($entity, ' && ', '$routeParams.', ' != null')} ) {
+		${_}scope.loadAllReferencies();
 		${_}scope.refresh${entity.name}(${tools.keysAsString(${entity}, ', ', '$routeParams.', '')});
     } else {
         ${_}scope.refresh${entity.name}List();

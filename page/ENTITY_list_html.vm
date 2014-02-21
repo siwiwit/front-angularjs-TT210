@@ -51,7 +51,7 @@
 						<td>{{${entity.name.toLowerCase()}.${field.formatedName(0)}}}</td>
 #end
 #end
-						<td><a class="btn btn-info" href="#/${itemVariable}/$tools.keyInAngularLanguage($entity, ${itemVariable}, '/')">Edit</a></td>
+						<td><a class="btn btn-info" href="#/${itemVariable}/$tools.keysAsString($entity, '/', "{{${itemVariable}.", "}}")">Edit</a></td>
 					</tr>
 				</tbody>
 			</table>

@@ -26,9 +26,12 @@
 #foreach( $field in $allFields )
 #set($htmlId      = "${uncapitalizedEntityName}_${field.name}" )
 #set($htmlName    = $field.name )
+#set($referencedEntityTypes = $tools.referencedEntityTypes($entity,$field) )
 			<div class="form-group">
 				<label for="${htmlId}" class="col-sm-2 control-label">${entity.name.toLowerCase()}.${field.formatedName(0)}</label>
 				<div class="col-sm-10">
+## ------------------------------------------------ KEY ELEMENT 
+#if( $referencedEntityTypes.size() == 0 )
 #if( $field.fullType == "java.util.Date" || $field.fullType == "java.sql.Date" || $field.fullType == "java.util.Calendar" )
 					<input id="${htmlId}" datepicker ng-model="${entity.name.toLowerCase()}.${htmlName}" name="${htmlName}" class="form-control" />
 #elseif( $field.fullType == "java.lang.Double" || $field.fullType == "java.lang.Integer" || $field.fullType == "java.lang.Long" || $field.fullType == "java.math.BigDecimal" || $field.fullType == "java.math.BigInteger" )
@@ -38,9 +41,18 @@
 #else
 					<input type="text" id="${htmlId}" name="${htmlName}" ng-model="${entity.name.toLowerCase()}.${htmlName}" class="form-control" />
 #end
+#end
+#if( $referencedEntityTypes.size() > 0 )
+#set( $ref = ${tools.uncapitalize($referencedEntityTypes.get(0))} )
+                    <select id="${htmlId}" ng-model="${entity.name.toLowerCase()}.${htmlName}" name="${htmlName}" class="form-control">
+						<option value=""></option>
+                        <option ng-repeat="${ref} in ${ref}s.list" title="{{${ref}.label}}" ng-selected="{{${ref}.value == ${entity.name.toLowerCase()}.${htmlName}}}" value="{{${ref}.value}}">{{${ref}.label}}</option>
+                    </select>
+#end
 				</div>
 			</div>
 #end
+
 			<!-- ACTION BUTTONS -->
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-2">
