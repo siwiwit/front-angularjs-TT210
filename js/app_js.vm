@@ -12,14 +12,18 @@ if (typeof String.prototype.endsWith !== 'function') {
 var baseURL = 'http://localhost:8080/demo/rest';
 
 // Declare app level module which depends on filters, and services
-angular.module('myApp', [
-  'ngRoute',
+var myApp = angular.module('myApp', [
+  'ngRoute', 
+  'ngResource', 
+  'ngCookies',
+  'App.I18N',
   'myApp.filters',
   'myApp.services',
   'myApp.directives',
   'myApp.controllers'
-]).
-config(['${_}routeProvider', function(${_}routeProvider) {
+]);
+
+myApp.config(['${_}routeProvider', function(${_}routeProvider) {
   ${_}routeProvider.when('/welcome', {templateUrl: 'partials/welcome.html'});
 #foreach($entity in ${selectedEntities})
   ${_}routeProvider.when('/${entity.name.toLowerCase()}',    {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_list.html', controller: '${entity.name}Ctrl'});

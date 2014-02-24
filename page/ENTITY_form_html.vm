@@ -15,10 +15,10 @@
 	<fieldset class="col-sm-12 bordure">
 		<legend class="legende">${entity.name}</legend>
 		
-		<div ng-repeat="success in successs.list" ng-show="successs.list.length > 0" class="alert alert-success">
+		<div ng-repeat="success in message.successs" ng-show="message.successs.length > 0" class="alert alert-success">
        		{{success}}
 		</div>
-		<div ng-repeat="error in errors.list" ng-show="errors.list.length > 0" class="alert alert-danger">
+		<div ng-repeat="error in message.errors" ng-show="message.errors.length > 0" class="alert alert-danger">
        		{{error}}
 		</div>
    		
@@ -46,7 +46,7 @@
 #set( $ref = ${tools.uncapitalize($referencedEntityTypes.get(0))} )
                     <select id="${htmlId}" ng-model="${entity.name.toLowerCase()}.${htmlName}" name="${htmlName}" class="form-control">
 						<option value=""></option>
-                        <option ng-repeat="${ref} in ${ref}s.list" title="{{${ref}.label}}" ng-selected="{{${ref}.value == ${entity.name.toLowerCase()}.${htmlName}}}" value="{{${ref}.value}}">{{${ref}.label}}</option>
+                        <option ng-repeat="${ref} in items.${ref}s" title="{{${ref}.label}}" ng-selected="{{${ref}.value == ${entity.name.toLowerCase()}.${htmlName}}}" value="{{${ref}.value}}">{{${ref}.label}}</option>
                     </select>
 #end
 				</div>

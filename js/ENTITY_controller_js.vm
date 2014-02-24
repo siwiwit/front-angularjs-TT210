@@ -18,27 +18,28 @@
 
 /* Controller for ${entity.name} */
 
-myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope', '${_}routeParams', '${_}http', '${_}location', function(${entity.name}, ${_}scope, ${_}routeParams, ${_}http, ${_}location) {
-	
-	var entityURL = baseURL + '/${tools.uncapitalize($entity.name)}';
+myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope', '${_}routeParams', '${_}http', '${_}location', '${_}cookies', function(${entity.name}, ${_}scope, ${_}routeParams, ${_}http, ${_}location, ${_}cookies) {
 	
     // mode
+
     ${_}scope.mode = null;
     
 	// data
+
     ${_}scope.${entity.name.toLowerCase()}s = {list: []};
     ${_}scope.${entity.name.toLowerCase()} = null;
 
 	// referencies entities
+
+	${_}scope.items = {};
 #foreach( $ref in $referencedEntities )
-	${_}scope.${tools.uncapitalize($ref)}s = {list: [], selected: null};
+	${_}scope.items.${tools.uncapitalize($ref)}s = [];
 #end
-	
 #foreach( $ref in $referencedEntities )
 	${_}scope.loadAll${ref} = function() {
         ${_}http({method: 'GET', url: baseURL + '/items/${tools.uncapitalize($ref)}'}).
         success(function(data, status, headers, config) {
-            ${_}scope.${tools.uncapitalize($ref)}s.list = data;
+            ${_}scope.items.${tools.uncapitalize($ref)}s = data;
         }).
         error(${_}scope.manageError);
     };
@@ -50,57 +51,44 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
 #end
     };
     
-    // success
-    ${_}scope.successs = {list: []};
+    // message
+
+	${_}scope.message = {};
+    ${_}scope.message.successs = [];
+    ${_}scope.message.errors = [];
+	${_}scope.cleanMessage = function() {
+        ${_}scope.message.successs = [];
+        ${_}scope.message.errors = [];
+    };
     ${_}scope.addSuccess = function(success) {
-        ${_}scope.successs.list.push(success);
+        ${_}scope.message.successs.push(success);
     };
-	
-	// errors
-    ${_}scope.errors = {list: []};
     ${_}scope.addError = function(error) {
-        ${_}scope.errors.list.push(error);
+        ${_}scope.message.errors.push(error);
     };
-	${_}scope.manageError = function(data, status, headers, config) {
-		if( status === 404 ) {
-			if( data == null || data === "" ) {
+	${_}scope.manageError = function(http) {
+		if( http.status === 404 ) {
+			if( http.data == null || http.data === "" ) {
 				${_}scope.addError('The server is not responding');
 			} else {
-				${_}scope.addError('Invalid URL : ' + config.url);
+				${_}scope.addError('Invalid URL : ' + http.config.url);
 			}
-		} else if ( status === 400 ) {
-			${_}scope.addError('Bad URL : ' + config.url);
-			${_}scope.addError(data);
+		} else if( error.status === 400 ) {
+			${_}scope.addError('Bad URL : ' + http.config.url);
+			${_}scope.addError(http.data);
 		} else {
-        	if( data != null && data !== "" ) {
-            	${_}scope.addError(data);
+        	if( http.data != null && http.data !== "" ) {
+            	${_}scope.addError(http.data);
         	}
 		}
     };
-    
-    // location
-    ${_}scope.refresh${entity.name}List = function() {
-        ${_}scope.clean${entity.name}sInScope();
-        ${_}scope.getAll(${_}scope.setAll${entity.name}sInScope);
-    }
-    ${_}scope.goTo${entity.name}List = function() {
-        ${_}scope.refresh${entity.name}List();
-        ${_}location.path('/${entity.name.toLowerCase()}');
-    }
-    ${_}scope.refresh${entity.name} = function(${tools.keysAsString(${entity}, ', ', '', '')}) {
-        ${_}scope.clean${entity.name}InScope();
-        ${_}scope.getOne(${tools.keysAsString(${entity}, ', ', '', '')}, ${_}scope.setOne${entity.name}InScope);
-    }
-    ${_}scope.goTo${entity.name} = function(${tools.keysAsString(${entity}, ', ', '', '')}) {
-        ${_}scope.refresh${entity.name}(${tools.keysAsString(${entity}, ', ', '', '')});
-        ${_}location.path('/${entity.name.toLowerCase()}/'+${tools.keysAsString(${entity}, "+'/'+", '', '')});
-    }
-
-	// display
-	${_}scope.cleanMessage = function() {
-        ${_}scope.successs.list = [];
-        ${_}scope.errors.list = [];
+	${_}scope.manageException = function(error) {
+		${_}scope.addError(error);
     };
+
+	// display data
+
+	
     ${_}scope.clean${entity.name}sInScope = function() {
         ${_}scope.${entity.name.toLowerCase()}s.list = [];
     };
@@ -117,70 +105,76 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
         ${_}scope.${entity.name.toLowerCase()} = ${entity.name.toLowerCase()};
     };
     
-    // data
-    ${_}scope.getAll = function(callbackSuccess) {
-        ${_}http({method: 'GET', url: entityURL}).
-        success(function(data, status, headers, config) {
-            callbackSuccess(data);
-        }).
-        error(${_}scope.manageError);
-    };
-    ${_}scope.getOne = function(${tools.keysAsString(${entity}, ', ', '', '')}, callbackSuccess) {
-        if( ${tools.keysAsString(${entity}, ' || ', '', " === 'new'")} ) {
-            return;
-        }
-        var url = entityURL + '/' + ${tools.keysAsString($entity, " + '/' + ", "", "")};
-        ${_}http({method: 'GET', url: url}).
-        success(function(data, status, headers, config) {
-            callbackSuccess(data);
-        }).
-        error(${_}scope.manageError);
-    };
-    ${_}scope.saveOne = function(${entity.name.toLowerCase()}, callbackSuccess) {
-        var url = entityURL;
-        var method;
-#foreach( $attribute in $entity.keyAttributes )
-        if( ${entity.name.toLowerCase()}.${attribute.name} == null || ${entity.name.toLowerCase()}.${attribute.name} == '' ) {
-			${_}scope.addError('${attribute.name} is not defined');
-			return;
-		}
-#end
-		// referencies entities
-#foreach( $ref in $referencedEntities )
-		// todo
-#end		
-		// mode : create or update
-		if( ${_}scope.mode === 'create' ) {
-            method = 'POST';
-        } else {
-            url += '/' + ${tools.keysAsString($entity, " + '/' + ", "$entity.name.toLowerCase().", "")};
-            method = 'PUT';
-        }
-		${_}http({method: method, url: url, data: ${entity.name.toLowerCase()}, headers: {'Content-Type': 'application/json'}}).
-        success(function(data, status, headers, config) {
-			${_}scope.addSuccess('save ok');
-            callbackSuccess(${entity.name.toLowerCase()});
-        }).
-        error(${_}scope.manageError);
-    };
-    ${_}scope.deleteOne = function(${tools.keysAsString(${entity}, ', ', '', '')}, callbackSuccess) {
-        var url = entityURL + '/' + ${tools.keysAsString($entity, " + '/' + ", "", "")};
-        ${_}http({method: 'DELETE', url: url}).
-        success(function(data, status, headers, config) {
-			${_}scope.addSuccess('delete ok');
-            callbackSuccess(data);
-        }).
-        error(${_}scope.manageError);
-    };
-        
+    // refresh data
+
+    ${_}scope.refresh${entity.name}List = function() {
+    	try {
+        	${_}scope.clean${entity.name}sInScope();
+	        ${entity.name}.getAll().then(
+				function(success) {
+        	        ${_}scope.setAll${entity.name}sInScope(success.data);
+            	}, 
+	            ${_}scope.manageError);
+    	} catch(ex) {
+    		${_}scope.manageException(ex);
+    	}
+    }
+    ${_}scope.refresh${entity.name} = function(${tools.keysAsString(${entity}, ', ', '', '')}) {
+    	try {
+        	${_}scope.clean${entity.name}InScope();
+	        ${entity.name}.get(${tools.keysAsString(${entity}, ', ', '', '')}).then(
+				function(success) {
+        	        ${_}scope.setOne${entity.name}InScope(success.data);
+            	}, 
+	            ${_}scope.manageError);
+    	  } catch(ex) {
+        	${_}scope.manageException(ex);
+    	}
+    }
+
+    // location
+
+    ${_}scope.goTo${entity.name}List = function() {
+        ${_}scope.refresh${entity.name}List();
+        ${_}location.path('/${entity.name.toLowerCase()}');
+    }
+    ${_}scope.goTo${entity.name} = function(${tools.keysAsString(${entity}, ', ', '', '')}) {
+        ${_}scope.refresh${entity.name}(${tools.keysAsString(${entity}, ', ', '', '')});
+        ${_}location.path('/${entity.name.toLowerCase()}/'+${tools.keysAsString(${entity}, "+'/'+", '', '')});
+    }
+
     // Actions
+
     ${_}scope.save = function() {
-		${_}scope.cleanMessage();
-        ${_}scope.saveOne(${_}scope.${entity.name.toLowerCase()}, ${_}scope.setOne${entity.name}InScope);
+    	try {
+			${_}scope.cleanMessage();
+			var save;
+			if( ${_}scope.mode === 'create' ) {
+        		save = ${entity.name}.create;
+			} else {
+				save = ${entity.name}.update;
+			}
+			save(${_}scope.${entity.name.toLowerCase()}).then(
+    	        function(success) {
+	                ${_}scope.addSuccess('save ok');
+                	${_}scope.setOne${entity.name}InScope(success.data);
+            	},
+        	    ${_}scope.manageError);
+    	} catch(ex) {
+        	${_}scope.manageException(ex);
+    	}
     };
     ${_}scope.delete = function(${tools.keysAsString(${entity}, ', ', '', '')}) {
-		${_}scope.cleanMessage();
-        ${_}scope.deleteOne(${tools.keysAsString(${entity}, ', ', '', '')}, ${_}scope.goTo${entity.name}List);
+	    try {
+			${_}scope.cleanMessage();
+    	    ${entity.name}.delete(${tools.keysAsString(${entity}, ', ', '', '')}).then(
+				function(success) {
+                	${_}scope.goTo${entity.name}List();
+            	}, 
+                ${_}scope.manageError);
+        } catch(ex) {
+            ${_}scope.manageException(ex);
+        }
     };
     
     // Main

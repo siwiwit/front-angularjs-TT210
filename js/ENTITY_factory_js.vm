@@ -1,3 +1,4 @@
+#set( $tools = $loader.newInstance("Tools") )
 #set( $_ = ${DOLLAR} )
 ##--------------------------------------------------------------------------------------------
 'use strict';
@@ -5,21 +6,45 @@
 /* Factory for ${entity.name} */
 
 myAppServices.factory('${entity.name}', ['${_}http', function(${_}http) {
-	var baseUrl = 'http://localhost:8080/demo/rest/${entity.name.toLowerCase()}';
-	return {
-		getAll: function() {
-			return ${_}http.get(baseUrl);
-		},
-		get: function(${entity.name.toLowerCase()}Id) {
-			return ${_}http.get(baseUrl + '/' + ${entity.name.toLowerCase()}Id);
-		},
-		save: function(${entity.name.toLowerCase()}) {
-			var url = ${entity.name.toLowerCase()}.id ? baseUrl + '/' + ${entity.name.toLowerCase()}.id : baseUrl;
-			return ${_}http.post(url, ${entity.name.toLowerCase()});
-		},
-		delete: function(${entity.name.toLowerCase()}Id) {
-			return ${_}http.delete(baseUrl + '/' + ${entity.name.toLowerCase()}Id);
+    var entityURL = baseURL + '/${tools.uncapitalize($entity.name)}';
+    var ${_}this = {};
+    ${_}this.getAll = function() {
+        return ${_}http.get(entityURL);
+    };
+    ${_}this.get = function(${tools.keysAsString(${entity}, ', ', '', '')}) {
+        var url = entityURL + '/' + ${tools.keysAsString($entity, " + '/' + ", "", "")};
+        return ${_}http.get(url);
+    };
+	${_}this.create = function(${entity.name.toLowerCase()}) {
+		${_}this.validate(${entity.name.toLowerCase()})
+		var url = entityURL;
+		return ${_}http.post(url, ${entity.name.toLowerCase()});
+    };
+    ${_}this.update = function(${entity.name.toLowerCase()}) {
+		${_}this.validate(${entity.name.toLowerCase()})
+		var url = entityURL + '/' + ${tools.keysAsString($entity, " + '/' + ", "$entity.name.toLowerCase().", "")};
+		return ${_}http.put(url, ${entity.name.toLowerCase()});
+    };
+    ${_}this.delete = function(${tools.keysAsString(${entity}, ', ', '', '')}) {
+        var url = entityURL + '/' + ${tools.keysAsString($entity, " + '/' + ", "", "")};
+        return ${_}http.delete(url);
+    };
+    ${_}this.validate = function(${entity.name.toLowerCase()}) {
+        var validationErrors = ${_}this.getValidationErrors(${entity.name.toLowerCase()});
+		if( validationErrors.length > 0 ) {
+			throw validationErrors;
 		}
+		return true;
+    };
+	${_}this.getValidationErrors = function(${entity.name.toLowerCase()}) {
+		var errors = [];
+#foreach( $attribute in $entity.keyAttributes )
+        if( ${entity.name.toLowerCase()}.${attribute.name} == null || ${entity.name.toLowerCase()}.${attribute.name} == '' ) {
+			errors.push('${attribute.name} is not defined');
+		}
+#end
+		return errors;
 	};
+	return ${_}this;
 }]);
 
