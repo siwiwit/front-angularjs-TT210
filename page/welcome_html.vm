@@ -1,10 +1,10 @@
 #set( $_ = "$" )
 		<h3>
-			Welcome
+			{{ 'welcome' | translate }}
 		</h3>
       
 		<ul class="entity">
 #foreach( $entity in $selectedEntities )
-            <li><a href="#/${entity.name.toLowerCase()}">${entity.name}</a></li>
+            <li><a href="#/${entity.name.toLowerCase()}">{{ '${entity.name}' | translate }}</a></li>
 #end
 	    </ul>

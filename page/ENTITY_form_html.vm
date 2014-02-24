@@ -13,10 +13,10 @@
 #set( $allFields = $fn.concatLists($keyFields, $dataFields) )
 ##--------------------------------------------------------------------------------------------------------
 	<fieldset class="col-sm-12 bordure">
-		<legend class="legende">${entity.name}</legend>
+		<legend class="legende">{{ '${entity.name}' | translate }}</legend>
 		
 		<div ng-repeat="success in message.successs" ng-show="message.successs.length > 0" class="alert alert-success">
-       		{{success}}
+       		{{ success | translate }}
 		</div>
 		<div ng-repeat="error in message.errors" ng-show="message.errors.length > 0" class="alert alert-danger">
        		{{error}}
@@ -28,7 +28,7 @@
 #set($htmlName    = $field.name )
 #set($referencedEntityTypes = $tools.referencedEntityTypes($entity,$field) )
 			<div class="form-group">
-				<label for="${htmlId}" class="col-sm-2 control-label">${entity.name.toLowerCase()}.${field.formatedName(0)}</label>
+				<label for="${htmlId}" class="col-sm-2 control-label">{{ '${entity.name.toLowerCase()}.${field.formatedName(0)}' | translate }}</label>
 				<div class="col-sm-10">
 ## ------------------------------------------------ KEY ELEMENT 
 #if( $referencedEntityTypes.size() == 0 )
@@ -56,13 +56,13 @@
 			<!-- ACTION BUTTONS -->
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-2">
-					<a role="button" class="btn btn-danger btn-block" ng-click="delete(${tools.keysAsString(${entity}, ", ", "${uncapitalizedEntityName}.", '')})">Delete</a>
+					<a role="button" class="btn btn-danger btn-block" ng-click="delete(${tools.keysAsString(${entity}, ", ", "${uncapitalizedEntityName}.", '')})">{{ 'delete' | translate }}</a>
 				</div>
     			<div class="col-sm-offset-4 col-sm-2">
-					<a role="button" class="btn btn-default btn-block" href="#/${uncapitalizedEntityName}">Cancel</a>
+					<a role="button" class="btn btn-default btn-block" href="#/${uncapitalizedEntityName}">{{ 'cancel' | translate }}</a>
 				</div>
     			<div class="col-sm-2">
-					<button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="save()">Save</button>
+					<button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="save()">{{ 'save' | translate }}</button>
 				</div>
 			</div>
 		</form>

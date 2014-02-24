@@ -12,10 +12,10 @@
 #set( $itemVariable = ${entity.name.toLowerCase()} )
 ##--------------------------------------------------------------------------------------------------------
 		<fieldset class="col-sm-12 bordure">
-			<legend class="legende">${entity.name}</legend>
+			<legend class="legende">{{ '${entity.name}' | translate }}</legend>
 		
 			<div ng-repeat="success in message.successs" ng-show="message.successs.length > 0" class="alert alert-success">
-       			{{success}}
+       			{{ success | translate }}
 			</div>
 			<div ng-repeat="error in message.errors" ng-show="message.errors.length > 0" class="alert alert-danger">
        			{{error}}
@@ -27,13 +27,13 @@
 					<tr>
 ## KEY FIELDS
 #foreach( $field in $keyFields )
-						<th>${itemVariable}.${field.formatedName(0)}</th>
+						<th>{{ '${itemVariable}.${field.formatedName(0)}' | translate }}</th>
 #end
 ## DATA FIELDS
 #foreach( $field in $dataFields )
-						<th>${itemVariable}.${field.formatedName(0)}</th>
+						<th>{{ '${itemVariable}.${field.formatedName(0)}' | translate }}</th>
 #end
-						<th><a class="btn btn-info" href='#/${itemVariable}/new'>create</a></th>
+						<th><a class="btn btn-info" href='#/${itemVariable}/new'>{{ 'create' | translate }}</a></th>
 					</tr>
 				</thead>
 ## ---TABLE BODY ------------------------------------------------------------------
@@ -51,7 +51,7 @@
 						<td>{{${entity.name.toLowerCase()}.${field.formatedName(0)}}}</td>
 #end
 #end
-						<td><a class="btn btn-info" href="#/${itemVariable}/$tools.keysAsString($entity, '/', "{{${itemVariable}.", "}}")">Edit</a></td>
+						<td><a class="btn btn-info" href="#/${itemVariable}/$tools.keysAsString($entity, '/', "{{${itemVariable}.", "}}")">{{ 'edit' | translate }}</a></td>
 					</tr>
 				</tbody>
 			</table>

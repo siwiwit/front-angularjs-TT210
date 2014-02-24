@@ -1,3 +1,19 @@
 {
-	"titre" : "Title ENGLISH"
+	"welcome" : "Welcome",
+	"create" : "Create",
+	"edit" : "Edit",
+	"delete" : "Delete",
+	"delete ok" : "Delete ok",
+	"save" : "Save",
+	"save ok" : "Save ok",
+	"cancel" : "Cancel",
+#foreach( $entity in $selectedEntities )
+
+	"${entity.name}" : "${entity.name}",
+#foreach( $field in $entity.attributes )
+	"${entity.name.toLowerCase()}.${field.formatedName(0)}" : "${field.formatedName(0)}",
+#end
+#end
+
+	"app.version" : "Version"
 }

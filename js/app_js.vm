@@ -16,14 +16,14 @@ var myApp = angular.module('myApp', [
   'ngRoute', 
   'ngResource', 
   'ngCookies',
-  'App.I18N',
+  'pascalprecht.translate',
   'myApp.filters',
   'myApp.services',
   'myApp.directives',
   'myApp.controllers'
 ]);
 
-myApp.config(['${_}routeProvider', function(${_}routeProvider) {
+myApp.config(['${_}routeProvider', '${_}translateProvider', function(${_}routeProvider, ${_}translateProvider) {
   ${_}routeProvider.when('/welcome', {templateUrl: 'partials/welcome.html'});
 #foreach($entity in ${selectedEntities})
   ${_}routeProvider.when('/${entity.name.toLowerCase()}',    {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_list.html', controller: '${entity.name}Ctrl'});
@@ -31,4 +31,18 @@ myApp.config(['${_}routeProvider', function(${_}routeProvider) {
   ${_}routeProvider.when('/${entity.name.toLowerCase()}/${tools.keysAsString(${entity}, '/', ':', '')}', {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_form.html', controller: '${entity.name}Ctrl'});
 #end
   ${_}routeProvider.otherwise({redirectTo: '/welcome'});
+
+  ${_}translateProvider.useStaticFilesLoader({
+    prefix: 'i18n/messages_',
+    suffix: '.json'
+  });
+  ${_}translateProvider.preferredLanguage('en');
+  ${_}translateProvider.fallbackLanguage('en');
+  ${_}translateProvider.useLocalStorage();
+}]);
+
+myApp.controller('TranslateCtrl', ['${_}scope', '${_}translate', function (${_}scope, ${_}translate) {
+  ${_}scope.changeLanguage = function (key) {
+    ${_}translate.uses(key);
+  };
 }]);

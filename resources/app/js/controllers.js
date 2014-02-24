@@ -4,6 +4,7 @@
 
 var myAppControllers = angular.module('myApp.controllers', []);
 
+/*
 myAppControllers.controller('TranslateCtrl', ['$cookies', '$scope', function ($cookies, $scope) {
 	  $scope.changeLanguage = function (langKey) {
 		  $cookies.lang = langKey;
@@ -16,3 +17,4 @@ myAppControllers.controller('TranslateCtrl', ['$cookies', '$scope', function ($c
 		  });
 	  };
 	}]);
+*/
