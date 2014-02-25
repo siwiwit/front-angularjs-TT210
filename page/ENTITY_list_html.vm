@@ -47,6 +47,8 @@
 #foreach( $field in $dataFields )
 #if( $field.formatedType(0) == "Date" ||  $field.formatedType(0) == "Calendar" )
 						<td>{{${entity.name.toLowerCase()}.${field.formatedName(0)} | date:'shortDate'}}</td>
+#elseif( $field.fullType == "java.lang.Double" || $field.fullType == "java.lang.Integer" || $field.fullType == "java.lang.Long" || $field.fullType == "java.math.BigDecimal" || $field.fullType == "java.math.BigInteger" )
+						<td>{{${entity.name.toLowerCase()}.${field.formatedName(0)} | number }}</td>
 #else
 						<td>{{${entity.name.toLowerCase()}.${field.formatedName(0)}}}</td>
 #end
