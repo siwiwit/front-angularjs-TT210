@@ -1,5 +1,9 @@
 {
 	"welcome" : "Welcome",
+	
+	"english" : "English",
+    "french" : "Fran\u00e7ais",
+	
 	"create" : "Create",
 	"edit" : "Edit",
 	"delete" : "Delete",

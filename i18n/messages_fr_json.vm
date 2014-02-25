@@ -1,5 +1,9 @@
 {
 	"welcome" : "Accueil",
+
+	"english" : "English",
+    "french" : "Fran\u00e7ais",	
+	
 	"create" : "Cr\u00e9er",
 	"edit" : "Modifier",
 	"delete" : "Supprimer",
