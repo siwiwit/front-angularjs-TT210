@@ -42,6 +42,7 @@ myApp.config(['${_}routeProvider', '${_}translateProvider', 'tmhDynamicLocalePro
   ${_}translateProvider.useLocalStorage();
 
   tmhDynamicLocaleProvider.localeLocationPattern("lib/angular/i18n/angular-locale_{{locale}}.js");
+  tmhDynamicLocaleProvider.useStorage('${_}cookieStore');
 }]);
 
 myApp.controller('TranslateCtrl', ['${_}scope', '${_}translate', 'tmhDynamicLocale', function (${_}scope, ${_}translate, tmhDynamicLocale) {
