@@ -33,13 +33,13 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
 
 	${_}scope.items = {};
 #foreach( $ref in $referencedEntities )
-	${_}scope.items.${tools.uncapitalize($ref)}s = [];
+	${_}scope.items.${fn.uncapitalize($ref)}s = [];
 #end
 #foreach( $ref in $referencedEntities )
 	${_}scope.loadAll${ref} = function() {
-        ${_}http({method: 'GET', url: baseURL + '/items/${tools.uncapitalize($ref)}'}).
+        ${_}http({method: 'GET', url: baseURL + '/items/${fn.uncapitalize($ref)}'}).
         success(function(data, status, headers, config) {
-            ${_}scope.items.${tools.uncapitalize($ref)}s = data;
+            ${_}scope.items.${fn.uncapitalize($ref)}s = data;
         }).
         error(${_}scope.manageError);
     };
@@ -119,10 +119,10 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
     		${_}scope.manageException(ex);
     	}
     }
-    ${_}scope.refresh${entity.name} = function(${tools.keysAsString(${entity}, ', ', '', '')}) {
+    ${_}scope.refresh${entity.name} = function(${entity.keyAttributesNamesAsString(', ', '', '')}) {
     	try {
         	${_}scope.clean${entity.name}InScope();
-	        ${entity.name}.get(${tools.keysAsString(${entity}, ', ', '', '')}).then(
+	        ${entity.name}.get(${entity.keyAttributesNamesAsString(', ', '', '')}).then(
 				function(success) {
         	        ${_}scope.setOne${entity.name}InScope(success.data);
             	}, 
@@ -138,9 +138,9 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
         ${_}scope.refresh${entity.name}List();
         ${_}location.path('/${entity.name.toLowerCase()}');
     }
-    ${_}scope.goTo${entity.name} = function(${tools.keysAsString(${entity}, ', ', '', '')}) {
-        ${_}scope.refresh${entity.name}(${tools.keysAsString(${entity}, ', ', '', '')});
-        ${_}location.path('/${entity.name.toLowerCase()}/'+${tools.keysAsString(${entity}, "+'/'+", '', '')});
+    ${_}scope.goTo${entity.name} = function(${entity.keyAttributesNamesAsString(', ', '', '')}) {
+        ${_}scope.refresh${entity.name}(${entity.keyAttributesNamesAsString(', ', '', '')});
+        ${_}location.path('/${entity.name.toLowerCase()}/'+${entity.keyAttributesNamesAsString("+'/'+", '', '')});
     }
 
     // Actions
@@ -164,10 +164,10 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
         	${_}scope.manageException(ex);
     	}
     };
-    ${_}scope.delete = function(${tools.keysAsString(${entity}, ', ', '', '')}) {
+    ${_}scope.delete = function(${entity.keyAttributesNamesAsString(', ', '', '')}) {
 	    try {
 			${_}scope.cleanMessage();
-    	    ${entity.name}.delete(${tools.keysAsString(${entity}, ', ', '', '')}).then(
+    	    ${entity.name}.delete(${entity.keyAttributesNamesAsString(', ', '', '')}).then(
 				function(success) {
                 	${_}scope.goTo${entity.name}List();
             	}, 
@@ -185,9 +185,9 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
         ${_}scope.mode = 'create';
 		${_}scope.loadAllReferencies();
         ${_}scope.bookorderitem = null;
-    } else if( ${tools.keysAsString($entity, ' && ', '$routeParams.', ' != null')} ) {
+    } else if( ${entity.keyAttributesNamesAsString(' && ', '$routeParams.', ' != null')} ) {
 		${_}scope.loadAllReferencies();
-		${_}scope.refresh${entity.name}(${tools.keysAsString(${entity}, ', ', '$routeParams.', '')});
+		${_}scope.refresh${entity.name}(${entity.keyAttributesNamesAsString(', ', '$routeParams.', '')});
     } else {
         ${_}scope.refresh${entity.name}List();
     }

@@ -1,4 +1,3 @@
-#set( $tools = $loader.newInstance("Tools") )
 #set( $_ = ${DOLLAR} )
 ##--------------------------------------------------------------------------------------------
 'use strict';
@@ -6,13 +5,13 @@
 /* Factory for ${entity.name} */
 
 myAppServices.factory('${entity.name}', ['${_}http', function(${_}http) {
-    var entityURL = baseURL + '/${tools.uncapitalize($entity.name)}';
+    var entityURL = baseURL + '/${fn.uncapitalize($entity.name)}';
     var ${_}this = {};
     ${_}this.getAll = function() {
         return ${_}http.get(entityURL);
     };
-    ${_}this.get = function(${tools.keysAsString(${entity}, ', ', '', '')}) {
-        var url = entityURL + '/' + ${tools.keysAsString($entity, " + '/' + ", "", "")};
+    ${_}this.get = function(${entity.keyAttributesNamesAsString(', ', '', '')}) {
+        var url = entityURL + '/' + ${entity.keyAttributesNamesAsString(" + '/' + ", "", "")};
         return ${_}http.get(url);
     };
 	${_}this.create = function(${entity.name.toLowerCase()}) {
@@ -22,11 +21,11 @@ myAppServices.factory('${entity.name}', ['${_}http', function(${_}http) {
     };
     ${_}this.update = function(${entity.name.toLowerCase()}) {
 		${_}this.validate(${entity.name.toLowerCase()})
-		var url = entityURL + '/' + ${tools.keysAsString($entity, " + '/' + ", "$entity.name.toLowerCase().", "")};
+		var url = entityURL + '/' + ${entity.keyAttributesNamesAsString(" + '/' + ", "$entity.name.toLowerCase().", "")};
 		return ${_}http.put(url, ${entity.name.toLowerCase()});
     };
-    ${_}this.delete = function(${tools.keysAsString(${entity}, ', ', '', '')}) {
-        var url = entityURL + '/' + ${tools.keysAsString($entity, " + '/' + ", "", "")};
+    ${_}this.delete = function(${entity.keyAttributesNamesAsString(', ', '', '')}) {
+        var url = entityURL + '/' + ${entity.keyAttributesNamesAsString(" + '/' + ", "", "")};
         return ${_}http.delete(url);
     };
     ${_}this.validate = function(${entity.name.toLowerCase()}) {

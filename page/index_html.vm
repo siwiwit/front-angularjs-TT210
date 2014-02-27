@@ -24,7 +24,7 @@
             	<span class="icon-bar"></span>
         		<span class="icon-bar"></span>
         	</a>
-			<a class="navbar-brand" href="#" data-translate="welcome"></a>
+			<a class="navbar-brand logo" href="#" data-translate="welcome"></a>
 			<ul class="nav navbar-nav languages" ng-controller="TranslateCtrl">
  				<li><a class="navbar-brand" href="" ng-click="changeLanguage('en')">
                         <span class="glyphicon glyphicon-th-large"></span>
@@ -41,7 +41,7 @@
 
     <div class="container">
 		<div ng-view></div>
-	  	<div>{{ 'app.version' | translate }} : <span data-app-version></span></div>
+	  	<div><span data-translate="app.version"></span><span data-app-version></span></div>
 	</div>
 
 	<!-- javascript -->

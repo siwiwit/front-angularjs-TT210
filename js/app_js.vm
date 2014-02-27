@@ -1,4 +1,3 @@
-#set( $tools = $loader.newInstance("Tools") )
 #set( $_= "$" )
 ##--------------------------------------------------------------------------------------------------------
 'use strict';
@@ -29,7 +28,7 @@ myApp.config(['${_}routeProvider', '${_}translateProvider', 'tmhDynamicLocalePro
 #foreach($entity in ${selectedEntities})
   ${_}routeProvider.when('/${entity.name.toLowerCase()}',    {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_list.html', controller: '${entity.name}Ctrl'});
   ${_}routeProvider.when('/${entity.name.toLowerCase()}/new', {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_form.html', controller: '${entity.name}Ctrl'});
-  ${_}routeProvider.when('/${entity.name.toLowerCase()}/${tools.keysAsString(${entity}, '/', ':', '')}', {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_form.html', controller: '${entity.name}Ctrl'});
+  ${_}routeProvider.when('/${entity.name.toLowerCase()}/${entity.keyAttributesNamesAsString('/', ':', '')}', {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_form.html', controller: '${entity.name}Ctrl'});
 #end
   ${_}routeProvider.otherwise({redirectTo: '/welcome'});
 
