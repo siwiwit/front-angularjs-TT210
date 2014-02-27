@@ -41,7 +41,7 @@
 
     <div class="container">
 		<div ng-view></div>
-	  	<div><span data-translate="app.version"></span><span data-app-version></span></div>
+	  	<div><span data-translate="app.version"></span>&nbsp;<span data-app-version></span></div>
 	</div>
 
 	<!-- javascript -->
