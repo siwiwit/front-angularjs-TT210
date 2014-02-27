@@ -17,6 +17,7 @@ var myApp = angular.module('myApp', [
   'ngCookies',
   'pascalprecht.translate',
   'tmh.dynamicLocale',
+  'mgcrea.ngStrap',
   'myApp.filters',
   'myApp.services',
   'myApp.directives',
