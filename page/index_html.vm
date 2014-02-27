@@ -64,8 +64,8 @@
 	<script src="js/services.js"></script>
 	<script src="js/controllers.js"></script>
 #foreach($entity in ${selectedEntities})
-	<script src="js/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_factory.js"></script>
-	<script src="js/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_controller.js"></script>
+	<script src="js/${fn.uncapitalize($entity.name)}/${fn.uncapitalize($entity.name)}_factory.js"></script>
+	<script src="js/${fn.uncapitalize($entity.name)}/${fn.uncapitalize($entity.name)}_controller.js"></script>
 #end
 	<script src="js/filters.js"></script>
 	<script src="js/directives.js"></script>

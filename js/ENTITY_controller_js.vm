@@ -1,5 +1,5 @@
 #set( $tools = $loader.newInstance("Tools") )
-#set( $uncapitalizedEntityName = $entity.name.toLowerCase() )
+#set( $uncapitalizedEntityName = $fn.uncapitalize($entity.name) )
 #set( $_= "$" )
 ##--------------------------------------------------------------------------------------------------------
 ##--------------------------------------------------------------------------------------------------------
@@ -26,8 +26,8 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
     
 	// data
 
-    ${_}scope.${entity.name.toLowerCase()}s = {list: []};
-    ${_}scope.${entity.name.toLowerCase()} = null;
+    ${_}scope.${fn.uncapitalize($entity.name)}s = {list: []};
+    ${_}scope.${fn.uncapitalize($entity.name)} = null;
 
 	// referencies entities
 
@@ -90,19 +90,19 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
 
 	
     ${_}scope.clean${entity.name}sInScope = function() {
-        ${_}scope.${entity.name.toLowerCase()}s.list = [];
+        ${_}scope.${fn.uncapitalize($entity.name)}s.list = [];
     };
     ${_}scope.clean${entity.name}InScope = function() {
-        ${_}scope.${entity.name.toLowerCase()} = null;
+        ${_}scope.${fn.uncapitalize($entity.name)} = null;
     };
-    ${_}scope.setAll${entity.name}sInScope = function(${entity.name.toLowerCase()}s) {
-        ${_}scope.${entity.name.toLowerCase()}s.list = ${entity.name.toLowerCase()}s;
+    ${_}scope.setAll${entity.name}sInScope = function(${fn.uncapitalize($entity.name)}s) {
+        ${_}scope.${fn.uncapitalize($entity.name)}s.list = ${fn.uncapitalize($entity.name)}s;
     };
-    ${_}scope.add${entity.name}InScope = function(${entity.name.toLowerCase()}) {
-        ${_}scope.${entity.name.toLowerCase()}s.list.push(${entity.name.toLowerCase()});
+    ${_}scope.add${entity.name}InScope = function(${fn.uncapitalize($entity.name)}) {
+        ${_}scope.${fn.uncapitalize($entity.name)}s.list.push(${fn.uncapitalize($entity.name)});
     };
-    ${_}scope.setOne${entity.name}InScope = function(${entity.name.toLowerCase()}) {
-        ${_}scope.${entity.name.toLowerCase()} = ${entity.name.toLowerCase()};
+    ${_}scope.setOne${entity.name}InScope = function(${fn.uncapitalize($entity.name)}) {
+        ${_}scope.${fn.uncapitalize($entity.name)} = ${fn.uncapitalize($entity.name)};
     };
     
     // refresh data
@@ -136,11 +136,11 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
 
     ${_}scope.goTo${entity.name}List = function() {
         ${_}scope.refresh${entity.name}List();
-        ${_}location.path('/${entity.name.toLowerCase()}');
+        ${_}location.path('/${fn.uncapitalize($entity.name)}');
     }
     ${_}scope.goTo${entity.name} = function(${entity.keyAttributesNamesAsString(', ', '', '')}) {
         ${_}scope.refresh${entity.name}(${entity.keyAttributesNamesAsString(', ', '', '')});
-        ${_}location.path('/${entity.name.toLowerCase()}/'+${entity.keyAttributesNamesAsString("+'/'+", '', '')});
+        ${_}location.path('/${fn.uncapitalize($entity.name)}/'+${entity.keyAttributesNamesAsString("+'/'+", '', '')});
     }
 
     // Actions
@@ -154,7 +154,7 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
 			} else {
 				save = ${entity.name}.update;
 			}
-			save(${_}scope.${entity.name.toLowerCase()}).then(
+			save(${_}scope.${fn.uncapitalize($entity.name)}).then(
     	        function(success) {
 	                ${_}scope.addSuccess('save ok');
                 	${_}scope.setOne${entity.name}InScope(success.data);

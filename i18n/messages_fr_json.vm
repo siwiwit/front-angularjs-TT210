@@ -15,7 +15,7 @@
 
 	"${entity.name}" : "${entity.name}",
 #foreach( $field in $entity.attributes )
-	"${entity.name.toLowerCase()}.${field.formattedName(0)}" : "${field.formattedName(0)}",
+	"${fn.uncapitalize($entity.name)}.${field.formattedName(0)}" : "${field.formattedName(0)}",
 #end
 #end
 

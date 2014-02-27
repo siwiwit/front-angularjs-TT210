@@ -7,8 +7,8 @@
 ## Data fields = fields not in Primary Key and not in selected Links    
 #set( $dataFields = $entity.getAttributesByCriteria( $const.NOT_KEY, $const.NOT_IN_SELECTED_LINKS ) )
 ##--------------------------------------------------------------------------------------------------------
-## #set( $itemVariable = $entity.name.toLowerCase() )
-#set( $itemVariable = ${entity.name.toLowerCase()} )
+## #set( $itemVariable = $fn.uncapitalize($entity.name) )
+#set( $itemVariable = ${fn.uncapitalize($entity.name)} )
 ##--------------------------------------------------------------------------------------------------------
 		<fieldset class="col-sm-12 bordure">
 			<legend class="legende">{{ '${entity.name}' | translate }}</legend>
@@ -37,19 +37,19 @@
 				</thead>
 ## ---TABLE BODY ------------------------------------------------------------------
 				<tbody>
-					<tr ng-repeat="${entity.name.toLowerCase()} in ${entity.name.toLowerCase()}s.list">
+					<tr ng-repeat="${fn.uncapitalize($entity.name)} in ${fn.uncapitalize($entity.name)}s.list">
 ## KEY FIELDS
 #foreach( $field in $keyFields )
-						<td>{{${entity.name.toLowerCase()}.${field.formattedName(0)}}}</td>
+						<td>{{${fn.uncapitalize($entity.name)}.${field.formattedName(0)}}}</td>
 #end
 ## DATA FIELDS
 #foreach( $field in $dataFields )
 #if( $field.formattedType(0) == "Date" ||  $field.formattedType(0) == "Calendar" )
-						<td>{{${entity.name.toLowerCase()}.${field.formattedName(0)} | date:'shortDate'}}</td>
+						<td>{{${fn.uncapitalize($entity.name)}.${field.formattedName(0)} | date:'shortDate'}}</td>
 #elseif( $field.fullType == "java.lang.Double" || $field.fullType == "java.lang.Integer" || $field.fullType == "java.lang.Long" || $field.fullType == "java.math.BigDecimal" || $field.fullType == "java.math.BigInteger" )
-						<td>{{${entity.name.toLowerCase()}.${field.formattedName(0)} | number }}</td>
+						<td>{{${fn.uncapitalize($entity.name)}.${field.formattedName(0)} | number }}</td>
 #else
-						<td>{{${entity.name.toLowerCase()}.${field.formattedName(0)}}}</td>
+						<td>{{${fn.uncapitalize($entity.name)}.${field.formattedName(0)}}}</td>
 #end
 #end
 						<td><a class="btn btn-info" href="#/${itemVariable}/$entity.keyAttributesNamesAsString('/', "{{${itemVariable}.", "}}")">{{ 'edit' | translate }}</a></td>

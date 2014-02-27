@@ -5,6 +5,6 @@
       
 		<ul class="entity">
 #foreach( $entity in $selectedEntities )
-            <li><a href="#/${entity.name.toLowerCase()}">{{ '${entity.name}' | translate }}</a></li>
+            <li><a href="#/${fn.uncapitalize($entity.name)}">{{ '${entity.name}' | translate }}</a></li>
 #end
 	    </ul>
