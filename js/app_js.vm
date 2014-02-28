@@ -50,5 +50,6 @@ myApp.controller('TranslateCtrl', ['${_}scope', '${_}translate', 'tmhDynamicLoca
   ${_}scope.changeLanguage = function (key) {
     ${_}translate.uses(key);
     tmhDynamicLocale.set(key);
+    ${_}route.reload(false);
   };
 }]);
