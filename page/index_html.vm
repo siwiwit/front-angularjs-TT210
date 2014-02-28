@@ -24,20 +24,10 @@
         		<span class="icon-bar"></span>
         	</a>
 			<a class="navbar-brand logo" href="#" data-translate="welcome"></a>
-			<ul class="nav navbar-nav languages" ng-controller="TranslateCtrl">
- 				<li><a class="navbar-brand" href="" ng-click="changeLanguage('en')">
-                        <span class="glyphicon glyphicon-th-large"></span>
-                        <span data-translate="english"></span>
-				</a></li>
-				<li><a class="navbar-brand" href="" ng-click="changeLanguage('fr')">
-                        <span class="glyphicon glyphicon-th-large"></span>
-                        <span data-translate="french"></span>
-				</a></li>
-			</ul>
         </div>
       </div>
     </nav>
-
+	
     <div class="container">
 		<div ng-view></div>
 	  	<div><span data-translate="app.version"></span>&nbsp;<span data-app-version></span></div>

@@ -1,10 +1,24 @@
 #set( $_ = "$" )
-		<h3>
-			{{ 'welcome' | translate }}
-		</h3>
+
+	<div>
+		<ul class="nav navbar-nav languages" ng-controller="TranslateCtrl">
+ 			<li><a class="navbar-brand" href="" ng-click="changeLanguage('en')">
+                <span class="glyphicon glyphicon-th-large"></span>
+                <span data-translate="english"></span>
+			</a></li>
+			<li><a class="navbar-brand" href="" ng-click="changeLanguage('fr')">
+                <span class="glyphicon glyphicon-th-large"></span>
+                <span data-translate="french"></span>
+			</a></li>
+		</ul>
+	</div>
+
+	<h3>
+		{{ 'welcome' | translate }}
+	</h3>
       
-		<ul class="entity">
+	<ul class="entity">
 #foreach( $entity in $selectedEntities )
-            <li><a href="#/${fn.uncapitalize($entity.name)}">{{ '${entity.name}' | translate }}</a></li>
+        <li><a href="#/${fn.uncapitalize($entity.name)}">{{ '${entity.name}' | translate }}</a></li>
 #end
-	    </ul>
+    </ul>

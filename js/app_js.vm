@@ -46,10 +46,12 @@ myApp.config(['${_}routeProvider', '${_}translateProvider', 'tmhDynamicLocalePro
   tmhDynamicLocaleProvider.useStorage('${_}cookieStore');
 }]);
 
-myApp.controller('TranslateCtrl', ['${_}scope', '${_}translate', 'tmhDynamicLocale', '${_}route', function (${_}scope, ${_}translate, tmhDynamicLocale, , ${_}route) {
+myApp.controller('TranslateCtrl', ['${_}scope', '${_}translate', 'tmhDynamicLocale', '${_}route', function (${_}scope, ${_}translate, tmhDynamicLocale, ${_}route) {
   ${_}scope.changeLanguage = function (key) {
-    ${_}translate.uses(key);
-    tmhDynamicLocale.set(key);
-    ${_}route.reload(false);
+	//if( confirm('Vos données seront perdus') ) {
+      ${_}translate.uses(key);
+      tmhDynamicLocale.set(key);
+      ${_}route.reload(false);
+	//}
   };
 }]);
