@@ -46,7 +46,7 @@ myApp.config(['${_}routeProvider', '${_}translateProvider', 'tmhDynamicLocalePro
   tmhDynamicLocaleProvider.useStorage('${_}cookieStore');
 }]);
 
-myApp.controller('TranslateCtrl', ['${_}scope', '${_}translate', 'tmhDynamicLocale', function (${_}scope, ${_}translate, tmhDynamicLocale) {
+myApp.controller('TranslateCtrl', ['${_}scope', '${_}translate', 'tmhDynamicLocale', '${_}route', function (${_}scope, ${_}translate, tmhDynamicLocale, , ${_}route) {
   ${_}scope.changeLanguage = function (key) {
     ${_}translate.uses(key);
     tmhDynamicLocale.set(key);
