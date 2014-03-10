@@ -48,10 +48,8 @@ myApp.config(['${_}routeProvider', '${_}translateProvider', 'tmhDynamicLocalePro
 
 myApp.controller('TranslateCtrl', ['${_}scope', '${_}translate', 'tmhDynamicLocale', '${_}route', function (${_}scope, ${_}translate, tmhDynamicLocale, ${_}route) {
   ${_}scope.changeLanguage = function (key) {
-	//if( confirm('Vos données seront perdus') ) {
-      ${_}translate.uses(key);
-      tmhDynamicLocale.set(key);
-      ${_}route.reload(false);
-	//}
-  };
+    ${_}translate.uses(key);
+    tmhDynamicLocale.set(key);
+    ${_}route.reload(false);
+  }
 }]);
