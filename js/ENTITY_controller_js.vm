@@ -1,4 +1,3 @@
-#set( $tools = $loader.newInstance("Tools") )
 #set( $uncapitalizedEntityName = $fn.uncapitalize($entity.name) )
 #set( $_= "$" )
 ##--------------------------------------------------------------------------------------------------------
@@ -12,7 +11,7 @@
 ## All fields ( ordered fiels : 1) fields in Primary Key 2) fields not in primary key    
 #set( $allFields = $fn.concatLists($keyFields, $dataFields) )
 ##--------------------------------------------------------------------------------------------------------
-#set( $referencedEntities = $tools.referencedEntityTypes($entity, $entity.attributes) )## All referenced entities (PK and NON PK)
+#set( $referencedEntities = $entity.referencedEntityTypes() )## All referenced entities (PK and NON PK)
 ##--------------------------------------------------------------------------------------------------------
 'use strict';
 

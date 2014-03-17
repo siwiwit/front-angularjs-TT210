@@ -1,4 +1,3 @@
-#set( $tools = $loader.newInstance("Tools") )
 #set( $uncapitalizedEntityName = $fn.uncapitalize($entity.name) )
 #set( $_= "$" )
 ##--------------------------------------------------------------------------------------------------------
@@ -26,7 +25,9 @@
 #foreach( $field in $allFields )
 #set($htmlId      = "${uncapitalizedEntityName}_${field.name}" )
 #set($htmlName    = $field.name )
-#set($referencedEntityTypes = $tools.referencedEntityTypes($entity,$field) )
+#set($fields = [])
+#set($ttt = $fields.add($field))
+#set($referencedEntityTypes = $entity.referencedEntityTypes($fields) )
 #set($ng_disabled = "")
 #if( $field.isKeyElement() )
 #set($ng_disabled = " ng-disabled=""mode != 'create'""")
