@@ -42,7 +42,7 @@
 #elseif( $field.isLongText() )
 					<textarea id="${htmlId}" path="${htmlName}" name="${htmlName}" class="form-control" $ng_disabled/>
 #else
-					<input type="text" id="${htmlId}" name="${htmlName}" ng-model="${fn.uncapitalize($entity.name)}.${htmlName}" class="form-control" maxLength="${maxLength}" $ng_disabled/>
+					<input type="text" id="${htmlId}" name="${htmlName}" ng-model="${fn.uncapitalize($entity.name)}.${htmlName}" class="form-control" maxLength="${field.guiMaxLength}" $ng_disabled/>
 #end
 #end
 #if( $referencedEntityTypes.size() > 0 )
