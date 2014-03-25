@@ -72,7 +72,7 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
 			} else {
 				${_}scope.addError('Invalid URL : ' + http.config.url);
 			}
-		} else if( error.status === 400 ) {
+		} else if( http.status === 400 ) {
 			${_}scope.addError('Bad URL : ' + http.config.url);
 			${_}scope.addError(http.data);
 		} else {
