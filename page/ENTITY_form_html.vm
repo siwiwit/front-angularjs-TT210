@@ -39,8 +39,6 @@
 #if( $referencedEntityTypes.size() == 0 )
 #if( $field.fullType == "java.util.Date" || $field.fullType == "java.sql.Date" || $field.fullType == "java.util.Calendar" )
 					<input id="${htmlId}" bs-datepicker data-autoclose="1" ng-model="${fn.uncapitalize($entity.name)}.${htmlName}" name="${htmlName}" class="form-control" $ng_disabled/>
-#elseif( $field.fullType == "java.lang.Double" || $field.fullType == "java.lang.Integer" || $field.fullType == "java.lang.Long" || $field.fullType == "java.math.BigDecimal" || $field.fullType == "java.math.BigInteger" )
-					<input id="${htmlId}" type="number" step="any" ng-model="${fn.uncapitalize($entity.name)}.${htmlName}" name="${htmlName}" class="form-control" $ng_disabled/>
 #elseif( $field.isLongText() )
 					<textarea id="${htmlId}" path="${htmlName}" name="${htmlName}" class="form-control" $ng_disabled/>
 #else
