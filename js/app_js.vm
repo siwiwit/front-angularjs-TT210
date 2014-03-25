@@ -28,9 +28,9 @@ var myApp = angular.module('myApp', [
 myApp.config(['${_}routeProvider', '${_}translateProvider', 'tmhDynamicLocaleProvider', function(${_}routeProvider, ${_}translateProvider, tmhDynamicLocaleProvider) {
   ${_}routeProvider.when('/welcome', {templateUrl: 'partials/welcome.html'});
 #foreach($entity in ${selectedEntities})
-  ${_}routeProvider.when('/${fn.uncapitalize($entity.name)}',    {templateUrl: 'partials/${fn.uncapitalize($entity.name)}/${fn.uncapitalize($entity.name)}_list.html', controller: '${entity.name}Ctrl'});
-  ${_}routeProvider.when('/${fn.uncapitalize($entity.name)}/new', {templateUrl: 'partials/${fn.uncapitalize($entity.name)}/${fn.uncapitalize($entity.name)}_form.html', controller: '${entity.name}Ctrl'});
-  ${_}routeProvider.when('/${fn.uncapitalize($entity.name)}/${entity.keyAttributesNamesAsString('/', ':', '')}', {templateUrl: 'partials/${fn.uncapitalize($entity.name)}/${fn.uncapitalize($entity.name)}_form.html', controller: '${entity.name}Ctrl'});
+  ${_}routeProvider.when('/${fn.uncapitalize($entity.name)}',    {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_list.html', controller: '${entity.name}Ctrl'});
+  ${_}routeProvider.when('/${fn.uncapitalize($entity.name)}/new', {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_form.html', controller: '${entity.name}Ctrl'});
+  ${_}routeProvider.when('/${fn.uncapitalize($entity.name)}/${entity.keyAttributesNamesAsString('/', ':', '')}', {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_form.html', controller: '${entity.name}Ctrl'});
 #end
   ${_}routeProvider.otherwise({redirectTo: '/welcome'});
 
