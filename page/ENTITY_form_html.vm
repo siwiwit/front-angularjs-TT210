@@ -40,7 +40,7 @@
 #if( $field.fullType == "java.util.Date" || $field.fullType == "java.sql.Date" || $field.fullType == "java.util.Calendar" )
 					<input id="${htmlId}" bs-datepicker data-autoclose="1" ng-model="${fn.uncapitalize($entity.name)}.${htmlName}" name="${htmlName}" class="form-control" $ng_disabled/>
 #elseif( $field.isLongText() )
-					<textarea id="${htmlId}" path="${htmlName}" name="${htmlName}" class="form-control" $ng_disabled/>
+					<textarea id="${htmlId}" name="${htmlName}" class="form-control" $ng_disabled/>
 #else
 					<input type="text" id="${htmlId}" name="${htmlName}" ng-model="${fn.uncapitalize($entity.name)}.${htmlName}" class="form-control" maxLength="${field.guiMaxLength}" $ng_disabled/>
 #end
