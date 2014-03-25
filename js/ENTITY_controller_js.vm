@@ -74,9 +74,9 @@ myAppControllers.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope'
 			}
 		} else if( http.status === 400 ) {
 			if(http.data == null) {
-				${_}scope.addError(http.data);
-			} else {
 				${_}scope.addError('Bad URL : ' + http.config.url);
+			} else {
+				${_}scope.addError(http.data);
 			}
 		} else {
         	if( http.data != null && http.data !== "" ) {
