@@ -2,36 +2,40 @@
 ##--------------------------------------------------------------------------------------------------------
 'use strict';
 
+// REST services base URL
+var baseURL = '$fn.get("REST_BASE_URL","http://localhost:8080/demo/rest")';
+
+// Add "endsWith" function to the String object
 if (typeof String.prototype.endsWith !== 'function') {
     String.prototype.endsWith = function(suffix) {
         return this.indexOf(suffix, this.length - suffix.length) !== -1;
     };
 }
 
-var baseURL = 'http://localhost:8080/demo/rest';
-
 // Declare app level module which depends on filters, and services
 var myApp = angular.module('myApp', [
-  'ngRoute', 
-  'ngResource', 
-  'ngCookies',
-  'pascalprecht.translate',
-  'tmh.dynamicLocale',
-  'mgcrea.ngStrap.tooltip',
-  'mgcrea.ngStrap.datepicker',
-  'myApp.filters',
-  'myApp.services',
-  'myApp.directives',
-  'myApp.controllers'
+   'ngRoute'
+  ,'ngResource' 
+  ,'ngCookies'
+  ,'pascalprecht.translate'
+  ,'tmh.dynamicLocale'
+  ,'mgcrea.ngStrap.tooltip'
+  ,'mgcrea.ngStrap.datepicker'
+  ,'myApp.filters'
+  ,'myApp.services'
+  ,'myApp.directives'
+  ,'myApp.controllers'
+  ,'messageHandler.module'
+#foreach($entity in ${selectedEntities})
+  ,'${fn.uncapitalize($entity.name)}.module'
+#end
 ]);
 
+/**
+ * Main configuration
+ */
 myApp.config(['${_}routeProvider', '${_}translateProvider', 'tmhDynamicLocaleProvider', function(${_}routeProvider, ${_}translateProvider, tmhDynamicLocaleProvider) {
   ${_}routeProvider.when('/welcome', {templateUrl: 'partials/welcome.html'});
-#foreach($entity in ${selectedEntities})
-  ${_}routeProvider.when('/${fn.uncapitalize($entity.name)}',    {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_list.html', controller: '${entity.name}Ctrl'});
-  ${_}routeProvider.when('/${fn.uncapitalize($entity.name)}/new', {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_form.html', controller: '${entity.name}Ctrl'});
-  ${_}routeProvider.when('/${fn.uncapitalize($entity.name)}/${entity.keyAttributesNamesAsString('/', ':', '')}', {templateUrl: 'partials/${entity.name.toLowerCase()}/${entity.name.toLowerCase()}_form.html', controller: '${entity.name}Ctrl'});
-#end
   ${_}routeProvider.otherwise({redirectTo: '/welcome'});
 
   ${_}translateProvider.useStaticFilesLoader({
@@ -46,6 +50,9 @@ myApp.config(['${_}routeProvider', '${_}translateProvider', 'tmhDynamicLocalePro
   tmhDynamicLocaleProvider.useStorage('${_}cookieStore');
 }]);
 
+/**
+ * Controller for I18N
+ */
 myApp.controller('TranslateCtrl', ['${_}scope', '${_}translate', 'tmhDynamicLocale', '${_}route', function (${_}scope, ${_}translate, tmhDynamicLocale, ${_}route) {
   ${_}scope.changeLanguage = function (key) {
     ${_}translate.uses(key);
