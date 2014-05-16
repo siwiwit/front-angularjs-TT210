@@ -40,7 +40,11 @@ ${fn.uncapitalize($entity.name)}Module.controller('${entity.name}Ctrl', ['${enti
      */
 	${_}scope.loadAllReferencies = function() {
 #foreach( $ref in $referencedEntities )
-		${ref}.getAllAsListItems();
+		${ref}.getAllAsListItems().then(
+				function(success) {
+        	        ${_}scope.items.${fn.uncapitalize($ref)}s = success.data;
+            	}, 
+	            MessageHandler.manageError);
 #end
     };
     

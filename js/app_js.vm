@@ -22,7 +22,6 @@ var myApp = angular.module('myApp', [
   ,'myApp.filters'
   ,'myApp.services'
   ,'myApp.directives'
-  ,'myApp.controllers'
   ,'messageHandler.module'
 #foreach($entity in ${selectedEntities})
   ,'${fn.uncapitalize($entity.name)}.module'
