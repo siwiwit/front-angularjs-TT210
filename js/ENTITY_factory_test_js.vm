@@ -50,6 +50,15 @@ describe('services', function(){
     	${_}httpBackend.verifyNoOutstandingRequest();
     });
     
+	it('getAllAsListItems', function() {
+		${_}httpBackend.when('GET', restURL+'/items/${fn.uncapitalize($entity.name)}').respond("test");
+    	${entity.name}.getAllAsListItems().then(function(response) {
+        	expect(response.status).toBe(200);
+    		expect(response.data).toBe("test");
+    	});
+    	${_}httpBackend.flush();
+	});
+
     it('getAll', function() {
     	${_}httpBackend.when('GET', restURL+'/${fn.uncapitalize($entity.name)}').respond("test");
     	${entity.name}.getAll().then(function(response) {

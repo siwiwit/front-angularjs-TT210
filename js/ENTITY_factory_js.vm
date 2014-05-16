@@ -29,6 +29,14 @@ ${fn.uncapitalize($entity.name)}Module.factory('${entity.name}', ['${_}http', 'r
 	
 	return {
         /**
+         * Get all ${fn.uncapitalize($entity.name)}s as list items
+         * @return all ${fn.uncapitalize($entity.name)}s as list items
+         */
+    	getAllAsListItems: function() {
+        	return ${_}http.get(restURL + '/items/${fn.uncapitalize($entity.name)}');
+    	},
+
+        /**
          * Get all ${fn.uncapitalize($entity.name)}s
          * @return all ${fn.uncapitalize($entity.name)}s
          */

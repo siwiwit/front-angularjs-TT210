@@ -18,8 +18,8 @@
 /**
  * Controller for ${entity.name}
  **/
-${fn.uncapitalize($entity.name)}Module.controller('${entity.name}Ctrl', ['${entity.name}', '${_}scope', '${_}routeParams', '${_}http', '${_}location', '${_}cookies', 'MessageHandler', function(${entity.name}, ${_}scope, ${_}routeParams, ${_}http, ${_}location, ${_}cookies, MessageHandler) {
-	
+${fn.uncapitalize($entity.name)}Module.controller('${entity.name}Ctrl', ['${entity.name}', #foreach($ref in $referencedEntities) '${ref}',#end '${_}scope', '${_}routeParams', '${_}http', '${_}location', '${_}cookies', 'MessageHandler', 'restURL', function(${entity.name},#foreach($ref in $referencedEntities) ${ref},#end ${_}scope, ${_}routeParams, ${_}http, ${_}location, ${_}cookies, MessageHandler, restURL) {
+	#foreach($ref in $referencedEntities) '${ref}', #end
     // edition mode
     ${_}scope.mode = null;
     
@@ -40,21 +40,9 @@ ${fn.uncapitalize($entity.name)}Module.controller('${entity.name}Ctrl', ['${enti
      */
 	${_}scope.loadAllReferencies = function() {
 #foreach( $ref in $referencedEntities )
-		${_}scope.loadAll${ref}s();
+		${ref}.getAllAsListItems();
 #end
     };
-#foreach( $ref in $referencedEntities )
-    /**
-     * Load all ${fn.uncapitalize($ref)}s
-     */
-	${_}scope.loadAll${ref}s = function() {
-        ${_}http({method: 'GET', url: baseURL + '/items/${fn.uncapitalize($ref)}'}).
-        success(function(data, status, headers, config) {
-            ${_}scope.items.${fn.uncapitalize($ref)}s = data;
-        }).
-        error(MessageHandler.manageError);
-    };
-#end
     
     /**
      * Refresh ${fn.uncapitalize($entity.name)}s list

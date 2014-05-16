@@ -53,7 +53,7 @@ describe('controllers', function(){
   beforeEach(module('${fn.uncapitalize($entity.name)}.module'));
   
   describe('${entity.name}Ctrl', function(){
-    var ${entity.name}Ctrl, ${entity.name}, ${_}rootScope, ${_}scope, ${_}routeParams, ${_}httpBackend, ${_}location, MessageHandler, ${_}q, ${_}controller;
+    var ${entity.name}Ctrl, ${entity.name},#foreach($ref in $referencedEntities) ${ref}, #end${_}rootScope, ${_}scope, ${_}routeParams, ${_}httpBackend, ${_}location, MessageHandler, ${_}q, ${_}controller;
 	  
     beforeEach(inject(function(${_}injector) {
     	${_}controller = ${_}injector.get('${_}controller');
@@ -86,9 +86,20 @@ describe('controllers', function(){
     			return deferred.promise;
     		}
     	};
+		
+		#foreach($ref in $referencedEntities)
+		$ref = {
+			getAllAsListItems: jasmine.createSpy("getAllAsListItems").andCallFake(function() {
+				return [];
+			})
+		};
 
+		#end
 		${entity.name}Ctrl = ${_}controller('${entity.name}Ctrl', {
     		'${entity.name}': ${entity.name},
+			#foreach($ref in $referencedEntities)
+			'$ref': $ref,
+			#end
     		'${_}scope': ${_}scope,
     		'${_}routeParams': ${_}routeParams,
     		'${_}http': ${_}httpBackend,
@@ -234,22 +245,12 @@ describe('controllers', function(){
     	expect(${_}scope.goTo${entity.name}List).toHaveBeenCalled();
     	expect(MessageHandler.cleanMessage).toHaveBeenCalled();
     });
-    /*
+    
     it('init : ${fn.uncapitalize($entity.name)} create page', function() {
     	// given
-		location = {
-			path: function() {
-				return 'http://test/rest/${fn.uncapitalize($entity.name)}/new';
-			}
-		}
-		${entity.name}Ctrl = ${_}controller('${entity.name}Ctrl', {
-    		'${entity.name}': ${entity.name},
-    		'${_}scope': ${_}scope,
-    		'${_}routeParams': ${_}routeParams,
-    		'${_}http': ${_}httpBackend,
-    		'${_}location': ${_}location,
-    		'MessageHandler': MessageHandler
-    	});
+		${_}location.path.andCallFake(function() {
+        	return "/${fn.uncapitalize($entity.name)}/new";
+       	});
 
 		// when
 		${_}scope.${_}apply();
@@ -258,9 +259,9 @@ describe('controllers', function(){
     	expect(${_}scope.mode).toBeNull();
     	expect(${_}scope.${fn.uncapitalize($entity.name)}).toBeNull();
     	expect(${_}scope.${fn.uncapitalize($entity.name)}s).toBe('${fn.uncapitalize($entity.name)}1');
-    	expect(Object.keys(${_}scope.items).length).toBe(0);
+    	expect(Object.keys(${_}scope.items).length).toBe(${referencedEntities.size()});
     	expect(MessageHandler.cleanMessage).toHaveBeenCalled();
     });
-	*/
+	
   });
 });
