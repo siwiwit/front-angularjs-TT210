@@ -60,12 +60,14 @@ messageHandler.factory('MessageHandler',['$rootScope', function($rootScope) {
      */
     $this.getMessageValues = function(values) {
         var errorValues = {};
-        if(values instanceof Array) {
-            for (var i = 0; i < values.length; i++) {
-                errorValues['a' + i] = values[i];
-            }
-        } else {
-            errorValues['a0'] = values;
+        if(values != null) {
+	        if(values instanceof Array) {
+	            for (var i = 0; i < values.length; i++) {
+	                errorValues['a' + i] = values[i];
+	            }
+	        } else {
+	            errorValues['a0'] = values;
+	        }
         }
         return errorValues;
     };

@@ -5,10 +5,10 @@
 /**
  * Factory for ${entity.name}
  */
-${fn.uncapitalize($entity.name)}Module.factory('${entity.name}', ['${_}http', function(${_}http) {
+${fn.uncapitalize($entity.name)}Module.factory('${entity.name}', ['${_}http', 'restURL', function(${_}http, restURL) {
 
 	// REST Service URL to manage ${fn.uncapitalize($entity.name)}
-    var entityURL = baseURL + '/${fn.uncapitalize($entity.name)}';
+    var entityURL = restURL + '/${fn.uncapitalize($entity.name)}';
 	
 	/**
      * Validate ${fn.uncapitalize($entity.name)}
