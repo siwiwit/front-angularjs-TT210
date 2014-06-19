@@ -2,8 +2,7 @@
 
 // Declare app level module which depends on filters, and services
 var i18n = angular.module('i18n', [
-   'myApp'
-  ,'ngRoute'
+   'ngRoute'
   ,'pascalprecht.translate'
   ,'tmh.dynamicLocale'
 ]);
@@ -29,7 +28,7 @@ i18n.config(['$translateProvider', 'tmhDynamicLocaleProvider', function($transla
  */
 i18n.controller('TranslateCtrl', ['$scope', '$translate', '$route', 'tmhDynamicLocale', function ($scope, $translate, $route, tmhDynamicLocale) {
   $scope.changeLanguage = function (key) {
-    // $translate.uses(key);
+    $translate.uses(key);
     tmhDynamicLocale.set(key);
     $route.reload(false);
   }
