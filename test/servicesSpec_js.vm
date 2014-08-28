@@ -14,7 +14,7 @@ describe('service', function() {
 
   describe('restURL', function() {
     it('should return current rest URL', inject(function(restURL) {
-      expect(restURL).toEqual('http://localhost:8080/bookstore/rest');
+      expect(restURL).toEqual('${fn.get("REST_BASE_URL","http://localhost:8080/bookstore/rest")}');
     }));
   });
 });

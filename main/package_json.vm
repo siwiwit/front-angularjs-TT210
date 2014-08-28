@@ -1,7 +1,7 @@
 {
   "name": "${fn.get("PROJECT_NAME","to.be.defined")}",
   "private": true,
-  "version": "${fn.get("PROJECT_VERSION","to.be.defined")}",
+  "version": "${fn.get("PROJECT_VERSION","to.be.defined")}.0",
   "description": "to be defined",
   "repository": "to be defined",
   "license": "to be defined",
